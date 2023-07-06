@@ -1,0 +1,34 @@
+version: "3"
+services:
+  db:
+    image: mysql/mysql-server:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=hctr77hd"
+      - "MYSQL_USER=user"
+      - "MYSQL_PASSWORD=user"
+      - "MYSQL_DATABASE=ecommerce"
+  web:
+    build: .
+    command: ["./server"]
+    ports:
+      - "4000:4000"
+    volumes:
+      - "/app/"
+    depends_on:
+      - db
+    links:
+      - "db:database"
+    environment:
+      - APP_NAME="e-commerce-service"
+      - APP_PORT=4000
+      - GIN_MODE=dubug
+      - MYSQL_DB_HOST=db
+      - MYSQL_DB_PORT=3006
+      - MYSQL_DB_NAME=ecommerce
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+      - SECRET_KEY=xxx123
+      - TTL_ACCESSTOKEN=24h
+      - GIN_MODE=release
